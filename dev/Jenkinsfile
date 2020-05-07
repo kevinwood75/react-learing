@@ -22,7 +22,7 @@ node('appserver'){
     }*/
 
     stage('Release Container on Server'){
-        sh 'docker run --name woodezfi-ui -itd --rm -v ${PWD}:/app -v /app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true sample:dev'
+        sh 'docker run --name woodezfi-ui -itd  --rm  -v  ${PWD}:/app  -v /app/node_modules  -p 3001:3000 -e CHOKIDAR_USEPOLLING=true sample:dev'
 
     }
     notifySuccessful()
