@@ -12,7 +12,7 @@ node('appserver'){
     } */
 
     stage('Build Docker Image'){
-        sh 'docker build -t sample:dev .'
+        sh 'cd dev && docker build -t sample:dev .'
     }
     stage('Push Docker Image'){
         withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhub')]) {
