@@ -6,7 +6,7 @@ const Markets = ({ markets }) => {
       <table class="table">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">Ticker</th>
+            <th scope="col">kTicker</th>
             <th scope="col">Price</th>
             <th scope="col">Volume</th>
             <th scope="col">Time</th>
