@@ -1,0 +1,40 @@
+node('appserver'){
+  try {
+
+    notifyStarted()
+
+    stage('Git Checkout'){
+        git credentialsId: 'kevinwood75', url: 'https://github.com/kevinwood75/react-learing.git', branch: 'master'
+    }
+
+    stage('Stop web ui'){
+        sh 'ps -ef | grep serve | grep node | cut -d " " -f5 | xargs kill -9'
+    } 
+
+    stage('Build Docker Image'){
+        sh 'npm run build'
+    }
+
+    stage('Release App on Server'){
+        sh 'nohup serve -s build -l 3000 > start.log 2>&1 &'
+
+    }
+    notifySuccessful()
+  } catch (e) {
+      currentBuild.result = "FAILED"
+      notifyFailed()
+      throw e
+  }
+}
+
+def notifyStarted() {
+  slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+def notifySuccessful() {
+  slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+def notifyFailed() {
+  slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
